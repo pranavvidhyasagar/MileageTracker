@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "354568218119",
+    "firebase_url": "https://mileagetracker-387ad.firebaseio.com",
+    "project_id": "mileagetracker-387ad",
+    "storage_bucket": "mileagetracker-387ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354568218119:android:5b97175ad6bfe675",
+        "android_client_info": {
+          "package_name": "com.example.pranavvidhyasagar.mileagetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354568218119-aj4bnqcoa6taj12sa33qnclokau20v9r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pranavvidhyasagar.mileagetracker",
+            "certificate_hash": "436bcbf1d84ec7d5ed49b044fd40b524585cc345"
+          }
+        },
+        {
+          "client_id": "354568218119-fl2vl3ju3arkhhrhnjh93k36oj6go1ni.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "354568218119-fl2vl3ju3arkhhrhnjh93k36oj6go1ni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9Ltgidw7EXdYnbcPv7Wp8zO_ig2JTWW4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354568218119-fl2vl3ju3arkhhrhnjh93k36oj6go1ni.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

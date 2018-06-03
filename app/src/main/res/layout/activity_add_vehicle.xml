@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddVehicleActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="30dp"/>
+
+            <Spinner
+                android:id="@+id/vehicleType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:hint="Manufacturer"
+                android:paddingBottom="15dp"
+                android:textColorHint="#78909C" />
+
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="30dp"/>
+
+
+            <Spinner
+                android:id="@+id/vehicleManufacturer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:hint="Manufacturer"
+                android:paddingBottom="15dp"
+                android:textColorHint="#78909C" />
+
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="30dp"/>
+
+
+            <EditText
+                android:id="@+id/vehicleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:hint="Vehicle Name"
+                android:paddingBottom="15dp"
+                android:textColorHint="#78909C" />
+
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="30dp"/>
+
+            <EditText
+                android:id="@+id/vehicleRegistrationNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:hint="Vehicle Registartion Number"
+                android:paddingBottom="15dp"
+                android:textColorHint="#78909C" />
+
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="30dp"/>
+
+
+            <Button
+                android:id="@+id/buttonAddVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="7dp"
+                android:text="Add Vehicle"
+                android:textAllCaps="false"
+                android:textColor="#00796B" />
+
+
+        </LinearLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</LinearLayout>
