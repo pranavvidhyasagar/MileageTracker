@@ -1,11 +1,16 @@
 package com.example.pranavvidhyasagar.mileagetracker;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -30,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SetUpNotification();
+
         mAuth = FirebaseAuth.getInstance();
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
@@ -38,6 +45,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.textViewSignup).setOnClickListener(this);
         findViewById(R.id.buttonLogin).setOnClickListener(this);
+
+    }
+
+    private void SetUpNotification() {
+        /*Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 01, intent, Intent.FILL_IN_DATA);
+        Notification.Builder builder = new Notification.Builder(getApplicationContext());
+        builder.setContentTitle("This is the title");
+        builder.setContentText("This is the text");
+        builder.setSubText("Some sub text");
+        builder.setNumber(101);
+        builder.setContentIntent(pendingIntent);
+        builder.setTicker("Fancy Notification");
+        builder.setSmallIcon(R.drawable.ic_menu_camera);
+        //builder.setLargeIcon(bm);
+        builder.setAutoCancel(true);
+        builder.setOngoing(true);
+        builder.setPriority(Notification.PRIORITY_DEFAULT);
+        Notification notification = builder.build();
+        NotificationManager notificationManger =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManger.notify(01, notification);*/
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(getApplicationContext(), "notify_001");
+        Intent ii = new Intent(this, MainNavigationActivity.class);
+        //ii.setAction(ACTION_STARTJOURNEY);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, ii, 0);
+
+        NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+        //bigText.bigText(verseurl);
+        bigText.setBigContentTitle("Primary Vehicle Name");
+        bigText.setSummaryText("Text in detail");
+
+        mBuilder.setContentIntent(pendingIntent);
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher_round);
+        mBuilder.setContentTitle("Your Title");
+        mBuilder.setContentText("Your text");
+        mBuilder.setPriority(Notification.PRIORITY_MAX);
+        mBuilder.setStyle(bigText);
+        mBuilder.setOngoing(true);
+        mBuilder.setAutoCancel(false);
+        mBuilder.addAction(R.drawable.ic_menu_camera, "START JOURNEY", pendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("notify_001",
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            mNotificationManager.createNotificationChannel(channel);
+        }
+
+        mNotificationManager.notify(0, mBuilder.build());
 
     }
 
@@ -110,18 +173,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-    private static long back_pressed;
     @Override
     public void onBackPressed(){
-        if (back_pressed + 2000 > System.currentTimeMillis()){
-            super.onBackPressed();
-            finish();
-        }
-        else{
-            Toast.makeText(getBaseContext(), "Press once again to exit", Toast.LENGTH_SHORT).show();
-            back_pressed = System.currentTimeMillis();
-        }
+        super.onBackPressed();
+        Intent i=new Intent(this,MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        finish();
     }
 }
 

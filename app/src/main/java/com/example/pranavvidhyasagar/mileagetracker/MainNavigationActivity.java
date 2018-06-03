@@ -1,43 +1,76 @@
 package com.example.pranavvidhyasagar.mileagetracker;
 
-import android.app.Fragment;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.pranavvidhyasagar.mileagetracker.MainActivity;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-import static android.app.PendingIntent.getActivity;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class MainNavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    TextView UserName;
+    TextView UserName, distanceTravelled;
+    DatabaseReference database = FirebaseDatabase.getInstance().getReference("Vehicles");
+    RecyclerView recyclerView;
+    VehicleAdapter adapter;
+
+
+    List<VehicleCard> VehicleList;
+
+    boolean bound;
     private static final String TAG = "AccountFragment";
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    MyMainService MainServiceObj;
+    ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MyMainService.DistanceTravelBinder distanceTravelBinder = (MyMainService.DistanceTravelBinder)service;
+            MainServiceObj = distanceTravelBinder.getBinder();
+            bound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            bound = false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_navigation);
-        UserName = findViewById(R.id.UserId);
 
+        //distanceTravelled = findViewById(R.id.textView2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -58,7 +91,54 @@ public class MainNavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //UserName.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+        VehicleList = new ArrayList<>();
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //displayDistance();
+    }
+
+    private void displayDistance() {
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                double distance = 0;
+                if(MainServiceObj != null){
+                    distance = MainServiceObj.getDistanceTraveled();
+                }
+                distanceTravelled.setText(String.valueOf(distance));
+                handler.postDelayed(this, 1000);
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot vehicleSnapshot: dataSnapshot.getChildren()){
+                    VehicleCard v = vehicleSnapshot.getValue(VehicleCard.class);
+                    String email = v.email;
+                    if(email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString())){
+                        VehicleList.add(v);
+                    }
+
+                }
+
+                adapter = new VehicleAdapter(getApplicationContext(),VehicleList);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -75,6 +155,9 @@ public class MainNavigationActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_navigation, menu);
+        String x = FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
+        UserName = (TextView) findViewById(R.id.UserId);
+        UserName.setText(x);
         return true;
     }
 
@@ -110,12 +193,20 @@ public class MainNavigationActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout){
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this,MainActivity.class));
-            finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        } else if(id == R.id.buttonService){
+            Intent intent = new Intent(getApplicationContext(),SampleService.class);
+            startService(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getData() {
+
     }
 }
