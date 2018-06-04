@@ -1,17 +1,21 @@
 package com.example.pranavvidhyasagar.mileagetracker;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -21,8 +25,9 @@ import java.util.List;
 public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder> {
 
     private Context mctx;
-    private List<String> vehicleList;
+    private List<CardDisplayDetails> vehicleList;
     private  onItemClickListener mlistener = null;
+    String a;
 
     public interface onItemClickListener {
         public void itemClicked(View view , int position);
@@ -33,7 +38,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
     }
 
 
-    public VehicleAdapter(Context mctx, List<String> vehicleList) {
+    public VehicleAdapter(Context mctx, List<CardDisplayDetails> vehicleList) {
         this.mctx = (Context) mctx;
         this.vehicleList = vehicleList;
 
@@ -52,12 +57,21 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
 
     @Override
     public void onBindViewHolder(@NonNull VehicleViewHolder holder, int position) {
-        String vehicle = vehicleList.get(position);
-        holder.Manufacturer.setText(vehicle);
+        final CardDisplayDetails vehicle = vehicleList.get(position);
+        holder.Manufacturer.setText(vehicle.getManufacturer());
+        holder.Model.setText(vehicle.getModel());
+        holder.RegistrationNumber.setText(vehicle.getRegnum());
+        holder.b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer tag = (Integer) view.getTag();
 
-        /*holder.Model.setText(vehicle.getModel());
-        holder.Type.setText(vehicle.getType());
-        holder.Email.setText(vehicle.getEmail());*/
+                Intent intent = new Intent(mctx,UpdateActivity.class).putExtra("x", vehicle.regnum);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                view.getContext().startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -67,14 +81,16 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
 
     public static class VehicleViewHolder extends RecyclerView.ViewHolder{
 
-        TextView Model,Manufacturer,Type,Email;
+        TextView Model,Manufacturer,RegistrationNumber;
+        Button b;
 
         public VehicleViewHolder(@NonNull View itemView, final onItemClickListener listener) {
             super(itemView);
 
-            //Model = itemView.findViewById(R.id.Model);
+            Model = itemView.findViewById(R.id.Model);
             Manufacturer = itemView.findViewById(R.id.Manufacturer);
-            //Type = itemView.findViewById(R.id.Type);
+            b = itemView.findViewById(R.id.button2);
+            RegistrationNumber = itemView.findViewById(R.id.RegistrationNumber);
             //Email = itemView.findViewById(R.id.Email);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

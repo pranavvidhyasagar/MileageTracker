@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UpdateActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        tools:layout_editor_absoluteX="82dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/vehicleRegnum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="304dp" />
+
+        <TextView
+            android:id="@+id/vehicleManufacturer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vehicleRegnum"
+            android:paddingBottom="15dp"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="73dp" />
+
+        <TextView
+            android:id="@+id/vehicleName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vehicleManufacturer"
+            android:paddingBottom="15dp"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="129dp" />
+
+        <TextView
+            android:id="@+id/vehicleMileage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vehicleName"
+            android:paddingBottom="15dp"
+            android:hint="TextView"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="198dp"
+            />
+
+        <TextView
+            android:id="@+id/vehicleDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vehicleMileage"
+            android:paddingBottom="15dp"
+            android:hint="TextView"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="254dp" />
+
+
+        <EditText
+            android:id="@+id/Odometer"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:paddingBottom="15dp"
+            android:hint="Odometer Reading"
+            tools:layout_editor_absoluteX="85dp"
+            tools:layout_editor_absoluteY="368dp"
+            />
+
+        <Button
+            android:id="@+id/buttonUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="7dp"
+
+            android:text="Update"
+            android:textColor="#00796B"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/buttonGraph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="7dp"
+            android:text="Graphs"
+            android:textColor="#00796B"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

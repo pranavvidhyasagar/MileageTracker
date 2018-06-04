@@ -37,7 +37,8 @@
 
         <activity
             android:name=".VehicleDetails"
-            android:label="@string/title_activity_vehicle_details"></activity>
+            android:label="@string/title_activity_vehicle_details" />
+        <activity android:name=".UpdateActivity"></activity>
     </application>
 
 </manifest>

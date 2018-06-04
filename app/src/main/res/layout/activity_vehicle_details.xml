@@ -15,17 +15,36 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/vehicleName"/>
+        android:id="@+id/vehicleName"
+        android:layout_below="@id/vehicleManufacturer"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/vehicleMileage"/>
+        android:id="@+id/vehicleMileage"
+        android:layout_below="@id/vehicleName"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/vehicleDistance"/>
+        android:id="@+id/vehicleDistance"
+        android:layout_below="@id/vehicleMileage"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/vehicleRegnum"
+        android:layout_below="@id/vehicleDistance"/>
+
+    <EditText
+        android:id="@+id/Odometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vehicleRegnum"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="364dp"
+        tools:ignore="MissingConstraints,UnknownId" />
 
 
     <android.support.design.widget.BottomNavigationView
@@ -39,5 +58,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
+
+
 
 </android.support.constraint.ConstraintLayout>

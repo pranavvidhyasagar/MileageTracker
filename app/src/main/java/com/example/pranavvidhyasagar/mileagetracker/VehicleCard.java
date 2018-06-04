@@ -1,5 +1,10 @@
 package com.example.pranavvidhyasagar.mileagetracker;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by h283245 on 6/3/18.
  */
@@ -17,6 +22,7 @@ public class VehicleCard {
         this.mileage = mileage;
         this.distance = distance;
     }
+
     public VehicleCard() {
         this.email = "";
         this.manufacturer = "";
@@ -24,6 +30,18 @@ public class VehicleCard {
         this.type = "";
         this.mileage = 0;
         this.distance = 0;
+    }
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("email", email);
+        result.put("manufacturer", manufacturer);
+        result.put("model", model);
+        result.put("type", type);
+        result.put("mileage", mileage);
+        result.put("distance", distance);
+
+        return result;
     }
 
     public String getEmail() {
