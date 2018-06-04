@@ -28,11 +28,11 @@ import java.util.List;
 public class UpdateActivity extends AppCompatActivity  {
 
     private TextView mvehicleManufacturer, mvehicleName, mvehicleMileage, mvehicleDistance,mvehicleRegnum;
-    Button mbuttonUpdate;
+    Button mbuttonUpdate, mbuttonGraph;
     DatabaseReference database = FirebaseDatabase.getInstance().getReference("Vehicles");
     List<VehicleCard> VehicleList;
     String rn, totalDistance, email,manufacturer,model,type;
-    float mileage,distance ;
+    float mileage,distance;
     EditText distanceTravelled;
 
         @Override
@@ -46,6 +46,7 @@ public class UpdateActivity extends AppCompatActivity  {
         mvehicleDistance = (TextView) findViewById(R.id.vehicleDistance);
         mvehicleRegnum = (TextView) findViewById(R.id.vehicleRegnum);
             mbuttonUpdate = (Button)findViewById(R.id.buttonUpdate);
+            mbuttonGraph = (Button)findViewById(R.id.buttonGraph);
         distanceTravelled = (EditText)findViewById(R.id.Odometer);
 
         mbuttonUpdate.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +56,13 @@ public class UpdateActivity extends AppCompatActivity  {
                 updateDistanceInDatabse(totalDistance);
             }
         });
+
+            mbuttonGraph.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getApplicationContext(),LineGraphActivity.class));
+                }
+            });
 
         rn = getIntent().getStringExtra("x");
          mvehicleRegnum.setText(rn);
@@ -83,19 +91,6 @@ public class UpdateActivity extends AppCompatActivity  {
             }
         });
     }
-
-    /*@Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.buttonUpdate:
-                totalDistance = distanceTravelled.getText().toString().trim();
-                updateDistanceInDatabse(totalDistance);
-                break;
-
-            case R.id.buttonGraph:
-                break;
-        }
-    }*/
 
     private void updateDistanceInDatabse(String totalDistance) {
 

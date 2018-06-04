@@ -1,16 +1,23 @@
 package com.example.pranavvidhyasagar.mileagetracker;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -29,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText editTextEmail, editTextPassword;
     ProgressBar progressBar;
     String email;
-
+    private static final int SMS_PERMISSION_CODE = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,37 +53,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.textViewSignup).setOnClickListener(this);
         findViewById(R.id.buttonLogin).setOnClickListener(this);
 
+        if (!hasReadSmsPermission()) {
+            showRequestPermissionsInfoAlertDialog();
+        }
+        SmsReceiver.bindListener(new SmsListener() {
+            @Override
+            public void messageReceived(String messageText) {
+
+                Log.e("Message",messageText);
+
+            }
+        });
+
+    }
+
+    private void showRequestPermissionsInfoAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Hi User");
+        builder.setMessage("Need Permission to read incoming sms");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                requestReadAndSendSmsPermission();
+            }
+        });
+        builder.show();
+    }
+
+
+    private boolean hasReadSmsPermission() {
+        return ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestReadAndSendSmsPermission() {
+
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS},
+                SMS_PERMISSION_CODE);
     }
 
     private void SetUpNotification() {
-        /*Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 01, intent, Intent.FILL_IN_DATA);
-        Notification.Builder builder = new Notification.Builder(getApplicationContext());
-        builder.setContentTitle("This is the title");
-        builder.setContentText("This is the text");
-        builder.setSubText("Some sub text");
-        builder.setNumber(101);
-        builder.setContentIntent(pendingIntent);
-        builder.setTicker("Fancy Notification");
-        builder.setSmallIcon(R.drawable.ic_menu_camera);
-        //builder.setLargeIcon(bm);
-        builder.setAutoCancel(true);
-        builder.setOngoing(true);
-        builder.setPriority(Notification.PRIORITY_DEFAULT);
-        Notification notification = builder.build();
-        NotificationManager notificationManger =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManger.notify(01, notification);*/
+
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(getApplicationContext(), "notify_001");
         Intent ii = new Intent(this, MainNavigationActivity.class);
-        //ii.setAction(ACTION_STARTJOURNEY);
-
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, ii, 0);
 
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-        //bigText.bigText(verseurl);
+
         bigText.setBigContentTitle("Primary Vehicle Name");
         bigText.setSummaryText("Text in detail");
 
