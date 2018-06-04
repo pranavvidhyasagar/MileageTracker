@@ -6,21 +6,24 @@ package com.example.pranavvidhyasagar.mileagetracker;
 
 public class VehicleCard {
     String email, manufacturer, model, type;
+    float mileage, distance;
 
 
-    public VehicleCard(String email, String manufacturer, String model, String type) {
+    public VehicleCard(String email, String manufacturer, String model, String type,float mileage,float distance) {
         this.email = email;
         this.manufacturer = manufacturer;
         this.model = model;
         this.type = type;
+        this.mileage = mileage;
+        this.distance = distance;
     }
-
-
     public VehicleCard() {
         this.email = "";
         this.manufacturer = "";
         this.model = "";
         this.type = "";
+        this.mileage = 0;
+        this.distance = 0;
     }
 
     public String getEmail() {
@@ -53,5 +56,22 @@ public class VehicleCard {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+
+    public float getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(float mileage) {
+        this.mileage = mileage;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 }

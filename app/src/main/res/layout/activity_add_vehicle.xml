@@ -15,14 +15,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:orientation="vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
             <Space
                 android:layout_width="1dp"
-                android:layout_height="30dp"/>
+                android:layout_height="30dp" />
 
             <Spinner
                 android:id="@+id/vehicleType"
@@ -35,7 +36,7 @@
 
             <Space
                 android:layout_width="1dp"
-                android:layout_height="30dp"/>
+                android:layout_height="30dp" />
 
 
             <Spinner
@@ -49,7 +50,7 @@
 
             <Space
                 android:layout_width="1dp"
-                android:layout_height="30dp"/>
+                android:layout_height="30dp" />
 
 
             <EditText
@@ -63,7 +64,7 @@
 
             <Space
                 android:layout_width="1dp"
-                android:layout_height="30dp"/>
+                android:layout_height="30dp" />
 
             <EditText
                 android:id="@+id/vehicleRegistrationNumber"
@@ -73,10 +74,19 @@
                 android:hint="Vehicle Registartion Number"
                 android:paddingBottom="15dp"
                 android:textColorHint="#78909C" />
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="10dp" />
+
+            <CheckBox
+                android:id="@+id/primaryVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Make Primary" />
 
             <Space
                 android:layout_width="1dp"
-                android:layout_height="30dp"/>
+                android:layout_height="30dp" />
 
 
             <Button

@@ -29,12 +29,15 @@
 
         <service
             android:name=".SampleService"
-            android:exported="false"></service>
+            android:exported="false" />
         <service
             android:name=".MyMainService"
             android:enabled="true"
             android:exported="false" />
 
+        <activity
+            android:name=".VehicleDetails"
+            android:label="@string/title_activity_vehicle_details"></activity>
     </application>
 
 </manifest>

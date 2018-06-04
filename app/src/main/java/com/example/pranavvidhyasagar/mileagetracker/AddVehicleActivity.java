@@ -5,10 +5,13 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -27,6 +30,7 @@ public class AddVehicleActivity extends AppCompatActivity implements View.OnClic
 
     Spinner vehicleTypeSpinner, vehicleManufacturerSpinner;
     EditText editTextVehicleModel, editTextRegistrationNumber;
+    CheckBox primaryCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,50 +70,22 @@ public class AddVehicleActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-
+    private Thread t1 = null;
+    private Thread t2 = null;
+    final int[] temp = new int[1];
+    final String[] RegistrationNum = new String[1];
+    final int[] pc = new int[1];
             @Override
             public void onClick(View view) {
-                final int[] temp = new int[1];
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        int flag = 1;
-                        editTextVehicleModel = ((EditText)findViewById(R.id.vehicleName));
-                        editTextRegistrationNumber = ((EditText)findViewById(R.id.vehicleRegistrationNumber));
 
-                        String Type = vehicleTypeSpinner.getSelectedItem().toString();
-                        String Manufacturer = vehicleManufacturerSpinner.getSelectedItem().toString();
-                        String Model = editTextVehicleModel.getText().toString().trim();
-                        String RegistrationNumber =editTextRegistrationNumber.getText().toString().trim();
-                        String Email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                initThreads();
 
-                        VehicleCard v = new VehicleCard(Email,Manufacturer,Model,Type);
-
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference vehiclesRef = databaseReference.child("Vehicles");
-
-                        if(v.model.isEmpty()){
-                            editTextVehicleModel.setError("Required");
-                            editTextVehicleModel.requestFocus();
-                            flag =0;
-                        }
-                        if(RegistrationNumber.isEmpty()){
-                            editTextRegistrationNumber.setError("Required");
-                            editTextRegistrationNumber.requestFocus();
-                            flag=0;
-                        }
-                        if(!Pattern.matches("^[A-Z]{2}[0-9]{1,2}[A-Z]{1,2}[0-9]{4}$",RegistrationNumber)){
-                            editTextRegistrationNumber.setError("Eg:TN38AB1234");
-                            editTextRegistrationNumber.requestFocus();
-                            flag=0;
-                        }
-                        if(flag==1){
-                            vehiclesRef.child(RegistrationNumber).setValue(v);
-                            temp[0] =flag;
-                        }
-
-                    }
-                });
+                try {
+                    t1.join();
+                    t2.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 if(temp[0] == 1) {
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
                     alertBuilder.setTitle("Vehicle Added")
@@ -133,4 +109,77 @@ public class AddVehicleActivity extends AppCompatActivity implements View.OnClic
                 }
 
             }
+    public void initThreads() {
+
+        t1 = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                int flag = 1;
+                editTextVehicleModel = ((EditText)findViewById(R.id.vehicleName));
+                editTextRegistrationNumber = ((EditText)findViewById(R.id.vehicleRegistrationNumber));
+                primaryCheck = (CheckBox)findViewById(R.id.primaryVehicle);
+
+                String Type = vehicleTypeSpinner.getSelectedItem().toString();
+                String Manufacturer = vehicleManufacturerSpinner.getSelectedItem().toString();
+                String Model = editTextVehicleModel.getText().toString().trim();
+                String RegistrationNumber =editTextRegistrationNumber.getText().toString().trim();
+                String Email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                float Mileage = 0;
+                float Distance = 0;
+
+                VehicleCard v = new VehicleCard(Email,Manufacturer,Model,Type,Mileage,Distance);
+
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference vehiclesRef = databaseReference.child("Vehicles");
+                if(v.model.isEmpty()){
+                    editTextVehicleModel.setError("Required");
+                    editTextVehicleModel.requestFocus();
+                    flag =0;
+                }
+                if(RegistrationNumber.isEmpty()){
+                    editTextRegistrationNumber.setError("Required");
+                    editTextRegistrationNumber.requestFocus();
+                    flag=0;
+                }
+                if(!Pattern.matches("^[A-Z]{2}[0-9]{1,2}[A-Z]{1,2}[0-9]{4}$",RegistrationNumber)){
+                    editTextRegistrationNumber.setError("Eg:TN38AB1234");
+                    editTextRegistrationNumber.requestFocus();
+                    flag=0;
+                }
+                if(primaryCheck.isChecked()){
+                    pc[0] = 1;
+                }
+                else
+                    pc[0]=0;
+                if(flag==1){
+                    RegistrationNum[0] = RegistrationNumber;
+                    vehiclesRef.child(RegistrationNumber).setValue(v);
+                    temp[0] =flag;
+                }
+            }
+        });
+
+        t2 = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    t1.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference pvRef = databaseReference.child("primaryVehicles");
+                primaryVehicle pv = new primaryVehicle();
+                if(pc[0]==1 && temp[0]==1){
+                    pv.email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                    pvRef.child(RegistrationNum[0]).setValue(pv);
+                }
+            }
+
+        });
+        t1.start();
+        t2.start();
+    }
 }

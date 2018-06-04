@@ -6,7 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ValueEventListener;
 
@@ -19,29 +21,43 @@ import java.util.List;
 public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder> {
 
     private Context mctx;
-    private List<VehicleCard> vehicleList;
+    private List<String> vehicleList;
+    private  onItemClickListener mlistener = null;
 
-    public VehicleAdapter(Context mctx, List<VehicleCard> vehicleList) {
+    public interface onItemClickListener {
+        public void itemClicked(View view , int position);
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener){
+        mlistener = listener;
+    }
+
+
+    public VehicleAdapter(Context mctx, List<String> vehicleList) {
         this.mctx = (Context) mctx;
         this.vehicleList = vehicleList;
 
     }
+
+
 
     @NonNull
     @Override
     public VehicleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater =  LayoutInflater.from(mctx);
         View view = inflater.inflate(R.layout.list_layout,null);
-        return new VehicleViewHolder(view);
+        /*view.setOnClickListener(mOnClickListener);*/
+        return new VehicleViewHolder(view, mlistener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull VehicleViewHolder holder, int position) {
-        VehicleCard vehicle = vehicleList.get(position);
-        holder.Manufacturer.setText(vehicle.getManufacturer());
-        holder.Model.setText(vehicle.getModel());
+        String vehicle = vehicleList.get(position);
+        holder.Manufacturer.setText(vehicle);
+
+        /*holder.Model.setText(vehicle.getModel());
         holder.Type.setText(vehicle.getType());
-        holder.Email.setText(vehicle.getEmail());
+        holder.Email.setText(vehicle.getEmail());*/
     }
 
     @Override
@@ -49,17 +65,30 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
         return vehicleList.size();
     }
 
-    class VehicleViewHolder extends RecyclerView.ViewHolder{
+    public static class VehicleViewHolder extends RecyclerView.ViewHolder{
 
         TextView Model,Manufacturer,Type,Email;
 
-        public VehicleViewHolder(@NonNull View itemView) {
+        public VehicleViewHolder(@NonNull View itemView, final onItemClickListener listener) {
             super(itemView);
 
-            Model = itemView.findViewById(R.id.Model);
+            //Model = itemView.findViewById(R.id.Model);
             Manufacturer = itemView.findViewById(R.id.Manufacturer);
-            Type = itemView.findViewById(R.id.Type);
-            Email = itemView.findViewById(R.id.Email);
+            //Type = itemView.findViewById(R.id.Type);
+            //Email = itemView.findViewById(R.id.Email);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener!=null){
+                        int pos = getAdapterPosition();
+                        if(pos != RecyclerView.NO_POSITION){
+                            listener.itemClicked(view,pos);
+                        }
+                    }
+
+
+                }
+            });
         }
     }
 }

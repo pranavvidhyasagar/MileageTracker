@@ -34,6 +34,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,9 +45,46 @@ public class MainNavigationActivity extends AppCompatActivity
     DatabaseReference database = FirebaseDatabase.getInstance().getReference("Vehicles");
     RecyclerView recyclerView;
     VehicleAdapter adapter;
+    String rn;
+    static Dictionary<Integer,String> positionRnMapping = new Dictionary<Integer, String>() {
+        @Override
+        public int size() {
+            return 0;
+        }
 
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
 
-    List<VehicleCard> VehicleList;
+        @Override
+        public Enumeration<Integer> keys() {
+            return null;
+        }
+
+        @Override
+        public Enumeration<String> elements() {
+            return null;
+        }
+
+        @Override
+        public String get(Object o) {
+            return null;
+        }
+
+        @Override
+        public String put(Integer integer, String s) {
+            return null;
+        }
+
+        @Override
+        public String remove(Object o) {
+            return null;
+        }
+    };
+    int count = 0;
+
+    List<String> VehicleList;
 
     boolean bound;
     private static final String TAG = "AccountFragment";
@@ -121,17 +160,37 @@ public class MainNavigationActivity extends AppCompatActivity
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                String registrationno = null;
+                VehicleList.clear();
                 for(DataSnapshot vehicleSnapshot: dataSnapshot.getChildren()){
                     VehicleCard v = vehicleSnapshot.getValue(VehicleCard.class);
                     String email = v.email;
                     if(email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString())){
-                        VehicleList.add(v);
+                        StringBuffer x = new StringBuffer();
+                        rn = vehicleSnapshot.getKey();
+                        x.append(v.manufacturer);
+                        x.append(System.getProperty("line.separator"));
+                        x.append(v.model);
+                        x.append(System.getProperty("line.separator"));
+                        x.append(registrationno);
+                        VehicleList.add(x.toString());
+                        count++;
+                        positionRnMapping.put(count,registrationno);
+
+                        //VehicleList.add(v);
                     }
-
                 }
-
                 adapter = new VehicleAdapter(getApplicationContext(),VehicleList);
                 recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(new VehicleAdapter.onItemClickListener() {
+                    @Override
+                    public void itemClicked(View view, int position) {
+
+                        Intent intent = new Intent(view.getContext(),VehicleDetails.class);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
@@ -139,6 +198,7 @@ public class MainNavigationActivity extends AppCompatActivity
 
             }
         });
+
     }
 
     @Override
