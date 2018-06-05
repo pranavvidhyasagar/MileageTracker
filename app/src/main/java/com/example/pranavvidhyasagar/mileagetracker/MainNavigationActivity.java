@@ -111,8 +111,8 @@ public class MainNavigationActivity extends AppCompatActivity
                 if(MainServiceObj != null){
                     distance = MainServiceObj.getDistanceTraveled();
                 }
-                distanceTravelled.setText(String.valueOf(distance));
-                handler.postDelayed(this, 1000);
+                Toast.makeText(getApplicationContext(),String.valueOf(distance),Toast.LENGTH_SHORT).show();
+                handler.postDelayed(this, 5000);
             }
         });
     }
@@ -134,20 +134,13 @@ public class MainNavigationActivity extends AppCompatActivity
                         cd.model = v.model;
                         cd.regnum = vehicleSnapshot.getKey();
                         VehicleList.add(cd);
-                        //VehicleList.add(v);
+
                     }
                 }
                 adapter = new VehicleAdapter(getApplicationContext(),VehicleList);
                 recyclerView.setAdapter(adapter);
 
-                /*adapter.setOnItemClickListener(new VehicleAdapter.onItemClickListener() {
-                    @Override
-                    public void itemClicked(View view, int position) {
-                        Integer pos = (Integer) view.getTag();
-                        Intent intent = new Intent(view.getContext(),VehicleDetails.class).putExtra("x",pos);
-                        startActivity(intent);
-                    }
-                });*/
+
             }
 
             @Override
@@ -214,8 +207,8 @@ public class MainNavigationActivity extends AppCompatActivity
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         } else if(id == R.id.buttonService){
-            Intent intent = new Intent(getApplicationContext(),SampleService.class);
-            startService(intent);
+            Intent intent = new Intent(getApplicationContext(),MyMainService.class);
+            bindService(intent, mServiceConnection,BIND_AUTO_CREATE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

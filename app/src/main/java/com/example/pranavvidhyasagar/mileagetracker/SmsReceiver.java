@@ -68,15 +68,15 @@ boolean isAmountRec = false;
                     strMessage += "\n";
                     String partOfSms = messages[i].getMessageBody();
                     Pattern regEx
-                            = Pattern.compile("(?:inr|rs)+[\\s]*[0-9+[\\,]*+[0-9]*]+[\\.]*[0-9]+");
+                            = Pattern.compile("(?:INR|Rs)+[\\s]*[0-9+[\\,]*+[0-9]*]+[\\.]*[0-9]+");
                     // Find instance of pattern matches
                     Matcher m = regEx.matcher(partOfSms);
                     if (m.find()) {
                         try {
                             Log.e("amount_value= ", "" + m.group(0));
                             String amount = (m.group(0).replaceAll("inr", ""));
-                            amount = amount.replaceAll("rs", "");
-                            amount = amount.replaceAll("inr", "");
+                            amount = amount.replaceAll("Rs", "");
+                            amount = amount.replaceAll("INR", "");
                             amount = amount.replaceAll(" ", "");
                             amount = amount.replaceAll(",", "");
                             amountGivenByUser = (Float.valueOf(amount));

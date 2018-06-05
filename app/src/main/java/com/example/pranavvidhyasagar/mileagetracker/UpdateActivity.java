@@ -31,8 +31,8 @@ public class UpdateActivity extends AppCompatActivity  {
     Button mbuttonUpdate, mbuttonGraph;
     DatabaseReference database = FirebaseDatabase.getInstance().getReference("Vehicles");
     List<VehicleCard> VehicleList;
-    String rn, totalDistance, email,manufacturer,model,type;
-    float mileage,distance;
+    String rn, email,manufacturer,model,type;
+    float mileage,distance, totalDistance;
     EditText distanceTravelled;
 
         @Override
@@ -49,11 +49,24 @@ public class UpdateActivity extends AppCompatActivity  {
             mbuttonGraph = (Button)findViewById(R.id.buttonGraph);
         distanceTravelled = (EditText)findViewById(R.id.Odometer);
 
+        if(distanceTravelled.getText().toString() == "")
+            mbuttonUpdate.setEnabled(false);
+        else
+            mbuttonUpdate.setEnabled(true);
+
         mbuttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                totalDistance = distanceTravelled.getText().toString().trim();
-                updateDistanceInDatabse(totalDistance);
+                    try {
+                        totalDistance = Float.valueOf(distanceTravelled.getText().toString());
+
+                        updateDistanceInDatabse(totalDistance);
+                        distanceTravelled.setText("");
+                    }
+                    catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Enter the travelled distance", Toast.LENGTH_SHORT).show();
+                    }
+
             }
         });
 
@@ -92,13 +105,13 @@ public class UpdateActivity extends AppCompatActivity  {
         });
     }
 
-    private void updateDistanceInDatabse(String totalDistance) {
+    private void updateDistanceInDatabse(float totalDistance) {
 
             manufacturer = mvehicleManufacturer.getText().toString().trim();
             model = mvehicleName.getText().toString().trim();
             mileage = Float.valueOf(mvehicleMileage.getText().toString());
-            distance = Float.valueOf(mvehicleDistance.getText().toString());
-            distance = distance + Float.valueOf(totalDistance);
+            float x = Float.valueOf(mvehicleDistance.getText().toString());
+            distance = x + totalDistance;
 
             VehicleCard v = new VehicleCard(email,manufacturer,model,type,mileage,distance);
 

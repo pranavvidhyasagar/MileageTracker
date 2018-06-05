@@ -30,9 +30,6 @@
         <activity android:name=".AddVehicleActivity" />
 
         <service
-            android:name=".SampleService"
-            android:exported="false" />
-        <service
             android:name=".MyMainService"
             android:enabled="true"
             android:exported="false" />
