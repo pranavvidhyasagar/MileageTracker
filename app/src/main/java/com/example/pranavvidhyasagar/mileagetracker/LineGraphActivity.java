@@ -67,7 +67,7 @@ public class LineGraphActivity extends AppCompatActivity {
     } ;
     private Thread t1 = null;
     private Thread t2 = null;
-    ArrayList<Entry> yValues = new ArrayList<>();
+    static ArrayList<Entry> yValues = new ArrayList<>();
 
 
     @Override
@@ -127,13 +127,13 @@ public class LineGraphActivity extends AppCompatActivity {
                 database.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        float i=0;
+                        float i=10;
                         for(DataSnapshot vehicleSnapshot: dataSnapshot.getChildren()){
                             VehicleCard v = vehicleSnapshot.getValue(VehicleCard.class);
                             yValues.add(new Entry(Float.valueOf(i),Float.valueOf(v.mileage)));
                             //float f = Float.valueOf(v.mileage.trim()).floatValue();
                             //Toast.makeText(getApplicationContext(),v.email,Toast.LENGTH_LONG).show();
-                            i++;
+                            i+=10;
                             //dc.put(Float.valueOf(i),Float.valueOf(v.mileage));
                             //Toast.makeText(getApplicationContext(),String.valueOf(v.mileage),Toast.LENGTH_LONG).show();
                             //yValues.add(new Entry(i++,v.mileage));

@@ -4,66 +4,158 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UpdateActivity">
+    tools:context=".UpdateActivity"
+    android:layout_centerHorizontal="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingBottom="15dp"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="72dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp">
+
+        <TextView
+            android:id="@+id/rn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:text="Registration Number: "
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="304dp" />
 
         <TextView
             android:id="@+id/vehicleRegnum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="15dp"
+            android:layout_toRightOf="@+id/rn"
             android:text="TextView"
             tools:layout_editor_absoluteX="135dp"
             tools:layout_editor_absoluteY="304dp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/vehicleManufacturer"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/vehicleRegnum"
-            android:paddingBottom="15dp"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="135dp"
-            tools:layout_editor_absoluteY="73dp" />
+            android:orientation="horizontal"
+            android:paddingLeft="15dp">
 
-        <TextView
-            android:id="@+id/vehicleName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/vehicleManufacturer"
-            android:paddingBottom="15dp"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="135dp"
-            tools:layout_editor_absoluteY="129dp" />
+            <TextView
+                android:id="@+id/vm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:text="Manufacturer: "
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="135dp"
+                tools:layout_editor_absoluteY="304dp" />
 
-        <TextView
-            android:id="@+id/vehicleMileage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/vehicleName"
-            android:paddingBottom="15dp"
-            android:hint="TextView"
-            tools:layout_editor_absoluteX="135dp"
-            tools:layout_editor_absoluteY="198dp"
-            />
+            <TextView
+                android:id="@+id/vehicleManufacturer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vehicleRegnum"
+                android:layout_toRightOf="@+id/vm"
+                android:paddingBottom="15dp"
+                android:text="TextView"
+                tools:layout_editor_absoluteX="135dp"
+                tools:layout_editor_absoluteY="73dp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/vehicleDistance"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/vehicleMileage"
-            android:paddingBottom="15dp"
-            android:hint="TextView"
-            tools:layout_editor_absoluteX="135dp"
-            tools:layout_editor_absoluteY="254dp" />
+            android:orientation="horizontal"
+            android:paddingLeft="15dp">
+            <TextView
+                android:id="@+id/vn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:text="Model: "
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="135dp"
+                tools:layout_editor_absoluteY="304dp" />
+            <TextView
+                android:id="@+id/vehicleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vehicleManufacturer"
+                android:layout_toRightOf="@+id/vn"
+                android:paddingBottom="15dp"
+                android:text="TextView"
+                tools:layout_editor_absoluteX="135dp"
+                tools:layout_editor_absoluteY="129dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp">
+            <TextView
+                android:id="@+id/vmil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:text="Mileage: "
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="135dp"
+                tools:layout_editor_absoluteY="304dp" />
+
+            <TextView
+                android:id="@+id/vehicleMileage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vehicleName"
+                android:layout_toRightOf="@+id/vmil"
+                android:hint="TextView"
+                android:paddingBottom="15dp"
+                tools:layout_editor_absoluteX="135dp"
+                tools:layout_editor_absoluteY="198dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp">
+            <TextView
+                android:id="@+id/vd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:text="Distance Travelled Since Last Refuelling: "
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="135dp"
+                tools:layout_editor_absoluteY="304dp" />
+
+            <TextView
+                android:id="@+id/vehicleDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vehicleMileage"
+                android:layout_toRightOf="@+id/vd"
+                android:hint="TextView"
+                android:paddingBottom="15dp"
+                tools:layout_editor_absoluteX="135dp"
+                tools:layout_editor_absoluteY="254dp" />
+        </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+            android:paddingLeft="15dp">
 
 
         <EditText
@@ -71,12 +163,11 @@
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:ems="10"
+            android:hint="Distance Travelled"
             android:inputType="textPersonName"
             android:paddingBottom="15dp"
-            android:hint="Odometer Reading"
             tools:layout_editor_absoluteX="85dp"
-            tools:layout_editor_absoluteY="368dp"
-            />
+            tools:layout_editor_absoluteY="368dp" />
 
         <Button
             android:id="@+id/buttonUpdate"
@@ -84,10 +175,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="7dp"
-
             android:text="Update"
             android:textColor="#00796B"
             android:textSize="20dp" />
+
+    </LinearLayout>
 
         <Button
             android:id="@+id/buttonGraph"
@@ -95,9 +187,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="7dp"
-            android:text="Graphs"
+            android:text="Vehicle Performance"
             android:textColor="#00796B"
             android:textSize="20dp" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
